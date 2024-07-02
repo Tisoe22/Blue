@@ -1,0 +1,44 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Sanitize input data
+    function sanitize_input($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+
+    // Collect and sanitize form data
+    $full_name = sanitize_input($_POST['full-name']);
+    $email = sanitize_input($_POST['email']);
+    $password = sanitize_input($_POST['password']);
+    $phone = sanitize_input($_POST['phone']);
+    $address = sanitize_input($_POST['address']);
+    $dob = sanitize_input($_POST['dob']);
+    $course = sanitize_input($_POST['course']);
+    $emergency_contact = sanitize_input($_POST['emergency-contact']);
+
+    // Prepare email message
+    $to = "biniyamh23@gmail.com"; // Replace with your email address
+    $subject = "New Registration at Bluetech Online School";
+    $message = "Full Name: $full_name\n"
+             . "Email: $email\n"
+             . "Phone Number: $phone\n"
+             . "Address: $address\n"
+             . "Date of Birth: $dob\n"
+             . "Preferred Course: $course\n"
+             . "Emergency Contact: $emergency_contact";
+
+    // Set additional headers
+    $headers = "From: $email" . "\r\n" .
+               "Reply-To: $email" . "\r\n" .
+               "X-Mailer: PHP/" . phpversion();
+
+    // Send email
+    if (mail($to, $subject, $message, $headers)) {
+        echo "Thank you for registering! We will contact you shortly.";
+    } else {
+        echo "Oops! Something went wrong. Please try again later.";
+    }
+}
+?>
